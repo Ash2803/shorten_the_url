@@ -16,8 +16,16 @@ def shorten_link(token, url):
     return response.json()['link']
 
 
-if __name__ == '__main__':
+def main():
     load_dotenv()
     token = os.getenv('TOKEN')
-    url = input()
-    print('Битлинк', shorten_link(token, url))
+    url = input("Enter the url: ")
+    try:
+        print('Битлинк', shorten_link(token, url))
+    except requests.exceptions.HTTPError:
+        print("Введен неправильный URL")
+
+
+if __name__ == '__main__':
+    main()
+
