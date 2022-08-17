@@ -4,19 +4,20 @@ from dotenv import load_dotenv
 
 
 def shorten_link(token, url):
+    bitlink = 'https://api-ssl.bitly.com/v4/shorten'
     headers = {
         'Authorization': f'Bearer {token}'
     }
     body = {
-        'long_url': 'https://mail.ru/',
+        'long_url': url
     }
-    response = requests.post(url, headers=headers, json=body)
+    response = requests.post(bitlink, headers=headers, json=body)
     response.raise_for_status()
-    print('Битлинк', response.json()['link'])
+    return response.json()['link']
 
 
 if __name__ == '__main__':
     load_dotenv()
     token = os.getenv('TOKEN')
-    url = 'https://api-ssl.bitly.com/v4/shorten'
-    shorten_link(token, url)
+    url = input()
+    print('Битлинк', shorten_link(token, url))
