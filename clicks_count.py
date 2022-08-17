@@ -2,30 +2,21 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-token = os.getenv('TOKEN')
-url = 'https://api-ssl.bitly.com/v4/user'
-headers = {
-    'Authorization': f'Bearer {token}'
-}
 
-
-def get_user_info():
-    response = requests.get(url, headers=headers)
+def shorten_link(token, url):
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    body = {
+        'long_url': 'https://mail.ru/',
+    }
+    response = requests.post(url, headers=headers, json=body)
     response.raise_for_status()
-    print(response.json())
+    print('Битлинк', response.json()['link'])
 
 
-url2 = 'https://api-ssl.bitly.com/v4/shorten'
-body = {
-    'long_url': 'https://mail.ru/',
-}
-
-
-def get_shorten_link():
-    response = requests.post(url2, headers=headers, json=body)
-    response.raise_for_status()
-    print(response.json())
-
-
-get_shorten_link()
+if __name__ == '__main__':
+    load_dotenv()
+    token = os.getenv('TOKEN')
+    url = 'https://api-ssl.bitly.com/v4/shorten'
+    shorten_link(token, url)
