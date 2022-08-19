@@ -19,6 +19,7 @@ def shorten_link(token, url):
 
 
 def count_clicks(token, link):
+    # link = shorten_link(token)
     bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}'
@@ -29,20 +30,20 @@ def count_clicks(token, link):
     }
     response = requests.get(bitlink, headers=headers, params=params)
     response.raise_for_status()
-    return response.json()
+    return response.json()['total_clicks']
 
 
 def main():
     load_dotenv()
     token = os.getenv('TOKEN')
     long_url = input("Enter the url: ")
-    print(shorten_link(token, long_url))
     try:
         print('Битлинк', shorten_link(token, long_url))
     except requests.exceptions.HTTPError:
         print("Введен неправильный URL")
-    # link = shorten_link(token, long_url)
-    # print(count_clicks(token, link))
+    shorten_url = input("Enter shorten url: ")
+    link = shorten_link(token, long_url)
+    print('Visitors:', count_clicks(token, link))
 
 
 if __name__ == '__main__':
