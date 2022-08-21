@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 
 def shorten_link(token, url):
+    """Make short url from given long url"""
     bitlink = 'https://api-ssl.bitly.com/v4/shorten'
     headers = {
         'Authorization': f'Bearer {token}'
@@ -15,11 +16,14 @@ def shorten_link(token, url):
     }
     response = requests.post(bitlink, headers=headers, json=body)
     response.raise_for_status()
-    return response.json()['id']
+    return response.json()['link']
 
 
 def count_clicks(token, link):
-    bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
+    """Parse url from def shorten_link and count amount of clicks on it"""
+    parsed_link = urlparse(link)
+    unparsed_link = ''.join(parsed_link[1:])
+    bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{unparsed_link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}'
     }
@@ -29,19 +33,26 @@ def count_clicks(token, link):
     }
     response = requests.get(bitlink, headers=headers, params=params)
     response.raise_for_status()
-    return response.json()['total_clicks']
+    clicks_count = response.json()['total_clicks']
+    return clicks_count
 
 
 def main():
     load_dotenv()
     token = os.getenv('TOKEN')
-    long_url = input("Enter the url: ")
+    long_url = input("Введите ссылку: ")
     try:
-        print('Битлинк', shorten_link(token, long_url))
+        print('Битлинк:', shorten_link(token, long_url))
     except requests.exceptions.HTTPError:
         print("Введен неправильный URL")
-    link = shorten_link(token, long_url)
-    print('Visitors:', count_clicks(token, link))
+        exit()
+
+    user_url = input("Введите ссылку: ")
+    try:
+        print('По вашей ссылке прошли:', count_clicks(token, user_url), 'раз(а)')
+    except requests.exceptions.HTTPError:
+        print("Введен неправильный URL")
+        exit()
 
 
 if __name__ == '__main__':
