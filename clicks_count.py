@@ -19,7 +19,6 @@ def shorten_link(token, url):
 
 
 def count_clicks(token, link):
-    # link = shorten_link(token)
     bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}'
@@ -41,7 +40,6 @@ def main():
         print('Битлинк', shorten_link(token, long_url))
     except requests.exceptions.HTTPError:
         print("Введен неправильный URL")
-    shorten_url = input("Enter shorten url: ")
     link = shorten_link(token, long_url)
     print('Visitors:', count_clicks(token, link))
 
