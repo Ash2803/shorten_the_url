@@ -38,13 +38,14 @@ def count_clicks(token, link):
 
 
 def is_bitlink(url, token):
-    bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{url}'
+    parsed_link = urlparse(url)
+    unparsed_link = ''.join(parsed_link[1:])
+    bitlink = f'https://api-ssl.bitly.com/v4/bitlinks/{unparsed_link}'
     headers = {
         'Authorization': f'Bearer {token}'
     }
     response = requests.get(bitlink, headers=headers)
-    if response.ok:
-        raise requests.exceptions.HTTPError()
+    return response.ok
 
 
 def main():
@@ -52,17 +53,12 @@ def main():
     token = os.getenv('TOKEN')
     url = input("Введите ссылку: ")
     try:
-        print('Битлинк:', shorten_link(token, url))
+        if is_bitlink(url, token):
+            print(count_clicks(token, url))
+        else:
+            print(shorten_link(token, url))
     except requests.exceptions.HTTPError:
-        print("Введен неправильный URL")
-
-    user_url = input("Введите ссылку: ")
-    try:
-        print('По вашей ссылке прошли:', count_clicks(token, user_url), 'раз(а)')
-    except requests.exceptions.HTTPError:
-        print("Введен неправильный URL")
-
-    print(is_bitlink(url, token))
+        print("Введена неправильная ссылка")
 
 
 if __name__ == '__main__':
