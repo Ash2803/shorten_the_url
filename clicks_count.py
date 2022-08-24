@@ -22,7 +22,7 @@ def shorten_link(token, url):
 def count_clicks(token, link):
     """Parse url from def shorten_link and count amount of clicks on it"""
     parsed_link = urlparse(link)
-    unparsed_link = f'{parsed_link.netloc}{parsed_link.path}{parsed_link.query}{parsed_link.fragment}'
+    unparsed_link = f'{parsed_link.netloc}{parsed_link.path}'
     url_template = f'https://api-ssl.bitly.com/v4/bitlinks/{unparsed_link}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}'
@@ -35,7 +35,7 @@ def count_clicks(token, link):
 
 def is_bitlink(url, token):
     parsed_link = urlparse(url)
-    unparsed_link = f'{parsed_link.netloc}{parsed_link.path}{parsed_link.query}{parsed_link.fragment}'
+    unparsed_link = f'{parsed_link.netloc}{parsed_link.path}'
     url_template = f'https://api-ssl.bitly.com/v4/bitlinks/{unparsed_link}'
     headers = {
         'Authorization': f'Bearer {token}'
