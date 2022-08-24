@@ -27,11 +27,7 @@ def count_clicks(token, link):
     headers = {
         'Authorization': f'Bearer {token}'
     }
-    params = {
-        'unit': 'day',
-        'units': '-1'
-    }
-    response = requests.get(url_template, headers=headers, params=params)
+    response = requests.get(url_template, headers=headers)
     response.raise_for_status()
     clicks_count = response.json()['total_clicks']
     return clicks_count
