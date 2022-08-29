@@ -1,3 +1,4 @@
+import argparse
 import os
 from urllib.parse import urlparse
 
@@ -45,12 +46,15 @@ def is_bitlink(url, token):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Сокращает длинную ссылку или показывает кол-во переходов по битлинку')
+    parser.add_argument('url', help='Ссылка')
+    args = parser.parse_args()
     load_dotenv()
     token = os.getenv('TOKEN')
-    url = input("Введите ссылку: ")
+    url = args.url
     try:
         if is_bitlink(url, token):
-            print(count_clicks(token, url))
+            print("Количество переходов по битлинку: ", count_clicks(token, url))
         else:
             print(shorten_link(token, url))
     except requests.exceptions.HTTPError:
