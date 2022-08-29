@@ -13,11 +13,10 @@ pip install -r requirements.txt
 - Зарегистрируйтесь на https://bitly.com, получите Access token в 
 - в <a href="https://app.bitly.com/settings/api/" target="_blank">личном кабинете</a>
 - Создайте файл .env и поместите туда свой API-токен TOKEN=token
-- Запустите программу:
+- Запустите программу вставив ссылку рядом с именем исполняемого файла:
 ```
-python clicks_count.py
+python clicks_count.py [url]
 ```
-- Вставьте ссылку;
 # Цель проекта
 
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков dvmn.org. 
