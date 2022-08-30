@@ -53,12 +53,12 @@ def main():
     parser.add_argument('url', help='Ссылка')
     args = parser.parse_args()
     load_dotenv()
-    token = os.getenv('BITLINK_TOKEN')
+    bitly_token = os.getenv('BITLINK_TOKEN')
     try:
-        if is_bitlink(args.url, token):
-            print("Количество переходов по битлинку: ", count_clicks(token, args.url))
+        if is_bitlink(args.url, bitly_token):
+            print("Количество переходов по битлинку: ", count_clicks(bitly_token, args.url))
         else:
-            print(shorten_link(token, args.url))
+            print(shorten_link(bitly_token, args.url))
     except requests.exceptions.HTTPError:
         print("Введена неправильная ссылка")
 
