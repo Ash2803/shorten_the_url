@@ -49,7 +49,8 @@ def main():
     parser = argparse.ArgumentParser(
         description='Сокращает длинную ссылку '
         'или показывает кол-во '
-        'переходов по битлинку')
+        'переходов по битлинку'
+    )
     parser.add_argument('url', help='Ссылка')
     args = parser.parse_args()
     load_dotenv()
